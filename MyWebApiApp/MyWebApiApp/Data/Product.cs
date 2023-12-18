@@ -10,11 +10,14 @@ namespace MyWebApiApp.Data
         [Required]
         public Guid ProducId { get; set; }
         [Required]
-        [MaxLength]
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
+        [MaxLength(100)]
+        public string? ProductName { get; set; }
+        public string? ProductDescription { get; set; }
         [Range(0, double.MaxValue)]
         public double Price {  get; set; }
         public byte Discount {  get; set; }
+        public int? CategoryID {  get; set; }
+        [ForeignKey(nameof(CategoryID))]
+        public Category Category { get; set; }  
     }
 }

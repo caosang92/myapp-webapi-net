@@ -9,6 +9,7 @@ namespace MyWebApiApp.Data
 
         #region Create DBSet 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
         #endregion
     }
 }
