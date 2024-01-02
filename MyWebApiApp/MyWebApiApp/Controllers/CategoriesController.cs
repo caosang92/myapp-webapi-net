@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyWebApiApp.Data;
 using MyWebApiApp.Models;
@@ -19,8 +20,16 @@ namespace MyWebApiApp.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var listCategory = _context.Categories.ToList();
-            return Ok(listCategory);
+            try
+            {
+                var listCategory = _context.Categories.ToList();
+                return Ok(listCategory);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
         }
 
         [HttpGet("{id}")]
@@ -45,6 +54,7 @@ namespace MyWebApiApp.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CategoryModel cateModel)
         {
             try
@@ -56,10 +66,10 @@ namespace MyWebApiApp.Controllers
                 };
                 _context.Add(cate);
                 _context.SaveChanges();
-                return Ok(cate);
+                return StatusCode(StatusCodes.Status201Created, cate);
             }
-           catch
-            {  return BadRequest(); }
+            catch
+            { return BadRequest(); }
         }
 
 
@@ -78,6 +88,31 @@ namespace MyWebApiApp.Controllers
                     _context.SaveChanges();
                     return NoContent();
                 }
+                return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCateById(int id)
+        {
+            var cate = _context.Categories.SingleOrDefault(cate => cate.CategoryId == id);
+
+            try
+            {
+                if (cate != null)
+                {
+                    _context.Categories.Remove(cate);
+                    _context.SaveChanges();
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+
+
+
                 return NotFound();
             }
             catch
