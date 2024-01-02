@@ -19,5 +19,11 @@ namespace MyWebApiApp.Data
         public int? CategoryID {  get; set; }
         [ForeignKey(nameof(CategoryID))]
         public Category Category { get; set; }  
+        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public Product()
+        {
+            OrderDetails = new List<OrderDetail>();
+        }
+
     }
 }

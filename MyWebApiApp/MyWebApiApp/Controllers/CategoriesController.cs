@@ -49,12 +49,12 @@ namespace MyWebApiApp.Controllers
         {
             try
             {
-                var cate = new Category()
+                var cate = new Category
                 {
                     CategoryName = cateModel.CategoryName,
                     CategoryDescription = cateModel.CategoryDescription
                 };
-                _context.Add(cateModel);
+                _context.Add(cate);
                 _context.SaveChanges();
                 return Ok(cate);
             }
