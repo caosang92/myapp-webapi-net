@@ -51,7 +51,7 @@ namespace MyWebApiApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryModel category)
+        public IActionResult Create(CategoryVM category)
         {
             try
             {
@@ -65,15 +65,15 @@ namespace MyWebApiApp.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCateById(int id, CategoryVM cateVM)
+        public IActionResult UpdateCateById(int id, CategoryModel cateModel)
         {
-            if(id != cateVM.CategoryId)
+            if(id != cateModel.CategoryId)
             {
                 return BadRequest();
             }
             try
             {
-                _categoryRepository.Update(cateVM);
+                _categoryRepository.Update(cateModel);
                 return NoContent();
             }
             catch

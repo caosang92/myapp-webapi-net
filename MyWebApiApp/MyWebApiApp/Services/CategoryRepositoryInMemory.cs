@@ -4,18 +4,18 @@ namespace MyWebApiApp.Services
 {
     public class CategoryRepositoryInMemory : ICategoryRepository
     {
-        static List<CategoryVM> categories = new List<CategoryVM>
+        static List<CategoryModel> categories = new List<CategoryModel>
         {
-            new CategoryVM{CategoryId = 1, CategoryName = "Tivi", CategoryDescription= "abc"},
-            new CategoryVM{CategoryId = 2, CategoryName = "Tủ lạnh", CategoryDescription= "cde"},
-            new CategoryVM{CategoryId = 3, CategoryName = "Điều hòa", CategoryDescription= "efh"},
-            new CategoryVM{CategoryId = 4, CategoryName = "Máy giặt", CategoryDescription= "xml"},
+            new CategoryModel{CategoryId = 1, CategoryName = "Tivi", CategoryDescription= "abc"},
+            new CategoryModel{CategoryId = 2, CategoryName = "Tủ lạnh", CategoryDescription= "cde"},
+            new CategoryModel{CategoryId = 3, CategoryName = "Điều hòa", CategoryDescription= "efh"},
+            new CategoryModel{CategoryId = 4, CategoryName = "Máy giặt", CategoryDescription= "xml"},
         };
 
 
-        public CategoryVM Add(CategoryModel category)
+        public CategoryModel Add(CategoryVM category)
         {
-            var _category = new CategoryVM
+            var _category = new CategoryModel
             {
                 CategoryId = categories.Max(cate => cate.CategoryId) + 1,
                 CategoryName = category.CategoryName,
@@ -32,27 +32,25 @@ namespace MyWebApiApp.Services
             categories.Remove(_category);
         }
 
-        public List<CategoryVM> GetAll()
+        public List<CategoryModel> GetAll()
         {
             return categories;
 
         }
 
-        public CategoryVM GetCategoryById(int id)
+        public CategoryModel GetCategoryById(int id)
         {
 
             return categories.SingleOrDefault(lo => lo.CategoryId == id);
         }
 
-        public void Update(CategoryVM category)
+        public void Update(CategoryModel category)
         {
             var _category = categories.SingleOrDefault(lo => lo.CategoryId == category.CategoryId);
             if (_category != null)
             {
                 _category.CategoryName = category.CategoryName;
             }
-
-
         }
     }
 }

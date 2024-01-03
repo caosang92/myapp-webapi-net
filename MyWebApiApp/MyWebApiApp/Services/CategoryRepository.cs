@@ -14,7 +14,7 @@ namespace MyWebApiApp.Services
         {
             _context = context;
         }
-        public CategoryVM Add(CategoryModel category)
+        public CategoryModel Add(CategoryVM category)
         {
             var cate = new Category
             {
@@ -23,7 +23,7 @@ namespace MyWebApiApp.Services
             };
             _context.Add(cate);
             _context.SaveChanges();
-            return new CategoryVM
+            return new CategoryModel
             {
                 CategoryId = cate.CategoryId,
                 CategoryName = cate.CategoryName,
@@ -42,9 +42,9 @@ namespace MyWebApiApp.Services
         }
 
 
-        public List<CategoryVM> GetAll()
+        public List<CategoryModel> GetAll()
         {
-            var categories = _context.Categories.Select(cate => new CategoryVM
+            var categories = _context.Categories.Select(cate => new CategoryModel
             {
                 CategoryId = cate.CategoryId,
                 CategoryDescription = cate.CategoryDescription,
@@ -53,12 +53,12 @@ namespace MyWebApiApp.Services
             return categories.ToList();
         }
 
-        public CategoryVM GetCategoryById(int id)
+        public CategoryModel GetCategoryById(int id)
         {
             var cate_result = _context.Categories.SingleOrDefault(cate => cate.CategoryId == id);
             if (cate_result != null)
             {
-                return new CategoryVM
+                return new CategoryModel
                 {
                     CategoryId = cate_result.CategoryId,
                     CategoryDescription = cate_result.CategoryDescription,
@@ -69,7 +69,7 @@ namespace MyWebApiApp.Services
             return null;
         }
 
-        public void Update(CategoryVM category)
+        public void Update(CategoryModel category)
         {
             var cate_result = _context.Categories.SingleOrDefault(cate => cate.CategoryId == category.CategoryId);
 

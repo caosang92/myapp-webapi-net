@@ -22,6 +22,7 @@ builder.Services.AddDbContext<MyDBContext>(option =>
 
 //cai nay danh cho test
 builder.Services.AddScoped<ICategoryRepository, CategoryRepositoryInMemory>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

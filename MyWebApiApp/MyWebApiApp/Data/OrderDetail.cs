@@ -3,7 +3,7 @@
     public class OrderDetail
     {
         public Guid OrderId { get; set; }
-        public Guid ProducId { get; set; }
+        public int ProducId { get; set; }
 
         public int Quantity {  get; set; }  
         public double Price { get; set; }
@@ -12,9 +12,5 @@
         //relationship
         public Order Order { get; set; }
         public Product Product { get; set; }
-
-
-
-
     }
 }

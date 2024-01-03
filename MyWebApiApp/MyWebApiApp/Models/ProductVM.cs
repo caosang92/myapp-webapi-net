@@ -4,10 +4,8 @@
     {
         public string? ProductName { get; set; }
         public double Price { get; set; }
+        public byte Discount {  get; set; }
+        public int? CategoryID {  get; set; }
 
-    }
-    public  class Product: ProductVM
-    {
-        public Guid ProductID { get; set; }
     }
 }

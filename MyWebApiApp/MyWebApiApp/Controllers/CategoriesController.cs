@@ -54,15 +54,14 @@ namespace MyWebApiApp.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public IActionResult Create(CategoryModel cateModel)
+        public IActionResult Create(CategoryVM cateVM)
         {
             try
             {
                 var cate = new Category
                 {
-                    CategoryName = cateModel.CategoryName,
-                    CategoryDescription = cateModel.CategoryDescription
+                    CategoryName = cateVM.CategoryName,
+                    CategoryDescription = cateVM.CategoryDescription
                 };
                 _context.Add(cate);
                 _context.SaveChanges();
@@ -74,7 +73,7 @@ namespace MyWebApiApp.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCateById(int id, CategoryModel cateModel)
+        public IActionResult UpdateCateById(int id, CategoryVM cateModel)
         {
             var cate = _context.Categories.SingleOrDefault(cate => cate.CategoryId == id);
 

@@ -8,7 +8,7 @@ namespace MyWebApiApp.Data
     {
         [Key]
         [Required]
-        public Guid ProducId { get; set; }
+        public int ProductId { get; set; }
         [Required]
         [MaxLength(100)]
         public string? ProductName { get; set; }

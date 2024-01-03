@@ -1,13 +1,14 @@
-﻿using MyWebApiApp.Models;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyWebApiApp.Models;
 
 namespace MyWebApiApp.Services
 {
     public interface ICategoryRepository
     {
-        List<CategoryVM> GetAll();
-        CategoryVM GetCategoryById(int id);
-        CategoryVM Add(CategoryModel category);
-        void Update(CategoryVM category);
+        List<CategoryModel> GetAll();
+        CategoryModel GetCategoryById(int id);
+        CategoryModel Add(CategoryVM category);
+        void Update(CategoryModel cateModel);
         void Delete(int id);
 
     }
