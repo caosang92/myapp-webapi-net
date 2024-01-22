@@ -44,9 +44,9 @@ namespace MyWebApiApp.Services
             return categories.SingleOrDefault(lo => lo.CategoryId == id);
         }
 
-        public void Update(CategoryModel category)
+        public void Update(int id, CategoryVM category)
         {
-            var _category = categories.SingleOrDefault(lo => lo.CategoryId == category.CategoryId);
+            var _category = categories.SingleOrDefault(lo => lo.CategoryId == id);
             if (_category != null)
             {
                 _category.CategoryName = category.CategoryName;

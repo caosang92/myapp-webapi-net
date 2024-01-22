@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MyWebApiApp.Data;
 using MyWebApiApp.Models;
@@ -14,6 +15,7 @@ namespace MyWebApiApp.Services
         {
             _context = context;
         }
+        
         public CategoryModel Add(CategoryVM category)
         {
             var cate = new Category
@@ -65,19 +67,22 @@ namespace MyWebApiApp.Services
                     CategoryName = cate_result.CategoryName
                 };
             }
-
             return null;
         }
 
-        public void Update(CategoryModel category)
+        public void Update(int id, CategoryVM category)
         {
-            var cate_result = _context.Categories.SingleOrDefault(cate => cate.CategoryId == category.CategoryId);
+            var cate_result = _context.Categories.SingleOrDefault(cate => cate.CategoryId == id);
 
             if (cate_result != null)
             {
-                category.CategoryDescription = cate_result.CategoryDescription;
-                category.CategoryName = cate_result.CategoryName;
+                 cate_result.CategoryDescription = category.CategoryDescription;
+                 cate_result.CategoryName = category.CategoryName;
                 _context.SaveChanges();
+            }
+            else
+            {
+                return;
             }
         }
     }

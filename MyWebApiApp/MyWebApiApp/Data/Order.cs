@@ -6,7 +6,7 @@
     }
     public class Order
     {
-        public Guid OrderId { get; set; }
+        public int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? ShipDate { get; set; }
         public OrderStatus OrderStatus {  get; set; }

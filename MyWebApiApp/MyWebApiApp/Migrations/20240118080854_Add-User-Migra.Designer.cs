@@ -12,8 +12,8 @@ using MyWebApiApp.Data;
 namespace MyWebApiApp.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20240102062104_AddOrderSchema")]
-    partial class AddOrderSchema
+    [Migration("20240118080854_Add-User-Migra")]
+    partial class AddUserMigra
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,14 +48,16 @@ namespace MyWebApiApp.Migrations
 
             modelBuilder.Entity("MyWebApiApp.Data.Order", b =>
                 {
-                    b.Property<Guid>("OrderId")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
                     b.Property<DateTime>("OrderDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 2, 15, 21, 4, 409, DateTimeKind.Local).AddTicks(3099));
+                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 8, 54, 44, DateTimeKind.Local).AddTicks(4229));
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -83,11 +85,11 @@ namespace MyWebApiApp.Migrations
 
             modelBuilder.Entity("MyWebApiApp.Data.OrderDetail", b =>
                 {
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ProducId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProducId")
+                        .HasColumnType("int");
 
                     b.Property<byte>("Discount")
                         .HasColumnType("tinyint");
@@ -107,9 +109,11 @@ namespace MyWebApiApp.Migrations
 
             modelBuilder.Entity("MyWebApiApp.Data.Product", b =>
                 {
-                    b.Property<Guid>("ProducId")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int?>("CategoryID")
                         .IsRequired()
@@ -129,11 +133,47 @@ namespace MyWebApiApp.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("ProducId");
+                    b.HasKey("ProductId");
 
                     b.HasIndex("CategoryID");
 
                     b.ToTable("M_Product");
+                });
+
+            modelBuilder.Entity("MyWebApiApp.Data.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MyWebApiApp.Data.OrderDetail", b =>

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MyWebApiApp.Data;
 using MyWebApiApp.Models;
 using MyWebApiApp.Services;
+using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyWebApiApp.Controllers
@@ -23,33 +25,41 @@ namespace MyWebApiApp.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll(string search) {
-            var result = _productRepository.GetAll(search).ToList();
-            return Ok(result);
-        }
-
-
-        [HttpGet("{id}")]
-        public IActionResult GetById(string id)
+        public IActionResult GetAllProducts(string search, double? from, double? to, string sortBy, int page)
         {
             try
             {
-                //LINQ Object Query
-                var product = products.SingleOrDefault(pd => pd.ProductId == int.Parse(id));
-                if (product == null)
-                {
-                    return NotFound();
-                }
-                return Ok(product);
+                var result = _productRepository.GetAll(search, from, to, sortBy, page);
+                return Ok(result);
             }
             catch
             {
-                return BadRequest();
+                return BadRequest("We can't get the product.");
             }
             
         }
 
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                var prod_result = _productRepository.GetProductById(id);
+                if (prod_result == null)
+                {
+                    return Ok(prod_result); // NotFound();
+                }
+                return Ok(prod_result);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         [HttpPost]
+        [Authorize]
         public IActionResult Create(ProductVM productVM)
         {
             try
@@ -64,31 +74,35 @@ namespace MyWebApiApp.Controllers
         }
 
         [HttpPut("id")]
-        public IActionResult Update(string id, ProductModel editproduct) {
+        public IActionResult Update(int id, ProductVM editproduct)
+        {
             try
             {
-                //LINQ Object Query
-                var product = products.SingleOrDefault(pd => pd.ProductId == int.Parse(id));
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                if(id != product.ProductId.ToString())
-                {
-                    return NotFound(product);
-                }
-                // thực hiện update
-                product.ProductName = editproduct.ProductName;
-                product.Price = editproduct.Price;
+                _productRepository.Update(id, editproduct);
                 return Ok();
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteProdById(int id)
+        {
+            try
+            {
+                _productRepository.Delete(id);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
 
+
     }
 }
+

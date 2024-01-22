@@ -8,7 +8,7 @@ namespace MyWebApiApp.Services
         List<CategoryModel> GetAll();
         CategoryModel GetCategoryById(int id);
         CategoryModel Add(CategoryVM category);
-        void Update(CategoryModel cateModel);
+        void Update(int id, CategoryVM cateModel);
         void Delete(int id);
 
     }

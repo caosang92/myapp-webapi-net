@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MyWebApiApp.Data;
 using MyWebApiApp.Models;
 using MyWebApiApp.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyWebApiApp.Controllers
 {
@@ -49,13 +50,15 @@ namespace MyWebApiApp.Controllers
             }
 
         }
-
+       
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CategoryVM category)
         {
             try
             {
-                return Ok(_categoryRepository.Add(category));
+                _categoryRepository.Add(category);
+                return StatusCode(StatusCodes.Status201Created, category);
             }
             catch
             {
@@ -65,15 +68,11 @@ namespace MyWebApiApp.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCateById(int id, CategoryModel cateModel)
+        public IActionResult UpdateCateById(int id, CategoryVM cate)
         {
-            if(id != cateModel.CategoryId)
-            {
-                return BadRequest();
-            }
             try
             {
-                _categoryRepository.Update(cateModel);
+                _categoryRepository.Update(id, cate);
                 return NoContent();
             }
             catch

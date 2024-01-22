@@ -12,6 +12,7 @@ namespace MyWebApiApp.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<User> Users { get; set; }
 
         #endregion
 
@@ -40,6 +41,13 @@ namespace MyWebApiApp.Data
                 .HasForeignKey(e => e.ProducId)
                 .HasConstraintName("FK_OrderDetail_Product");
 
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasIndex(e => e.UserName).IsUnique();
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
             });
         }
     }
